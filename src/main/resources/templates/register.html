@@ -1,37 +1,84 @@
+<!-- src/main/resources/templates/register.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ru">
 <head>
-    <title>Регистрация Инопланетянина</title>
+    <meta charset="UTF-8">
+    <title>Старняя Ресиграцитя</title>
+    <link rel="stylesheet" href="/css/register.css">
+    <script src="/js/register.js" defer></script>
 </head>
 <body>
-<h1>🚀 Регистрация Инопланетянина</h1>
-<form th:action="@{/register}" th:object="${alienUser}" method="post">
-    <div>
-        <label>Имя пользователя:</label>
-        <input type="text" th:field="*{username}" />
-        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+
+<div id="timer">00:00</div>
+
+<h1>Форма точно не регистрации</h1>
+
+<form id="registrationForm" action="/register" method="post" th:object="${alienUser}">
+
+    <!-- Имя пользователя -->
+    <div class="form-group">
+        <label for="username">Имя пользователя:</label>
+        <input type="text" id="username" th:field="*{username}" required>
     </div>
-    <div>
-        <label>Номер телефона:</label>
-        <input type="text" th:field="*{phoneNumber}" />
-        <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+
+    <!-- Номер телефона (каждая цифра — из выпадающего списка) -->
+    <div class="form-group">
+        <label for="phoneNumber">Номер телефона:</label>
+        <div id="phoneNumberSelectors"></div>
     </div>
-    <div>
-        <label>Пароль:</label>
-        <input type="password" th:field="*{password}" />
-        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+
+    <!-- Сгенерированный пароль -->
+    <div class="form-group">
+        <label for="password">Ваш пароль:</label>
+        <input type="text" id="password" th:field="*{password}" readonly>
     </div>
-    <div>
-        <label>Подтверждение пароля:</label>
-        <input type="password" th:field="*{confirmPassword}" />
-        <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+
+    <!-- Подтверждение пароля (перевёрнутое поле) -->
+    <div class="form-group upside-down">
+        <label for="confirmPassword">Подтвердите пароль:</label>
+        <input type="text" id="confirmPassword" th:field="*{confirmPassword}" required>
     </div>
-    <div>
-        <label>Класс пользователя:</label>
-        <input type="text" th:field="*{species}" />
-        <span th:if="${#fields.hasErrors('species')}" th:errors="*{species}"></span>
+
+    <!-- Вид пришельца (появляется только после клика) -->
+    <div class="form-group">
+        <label for="species">Класс пользователя:</label>
+        <select id="species" th:field="*{species}">
+            <option value="" disabled selected>Выберите...</option>
+            <option value="Ксеноморф">Ксеноморф</option>
+            <option value="Криптотот">Криптотот</option>
+            <option value="Петелинец">Петелинец</option>
+            <option value="Сириец">Сириец</option>
+            <option value="Чернодырец">Чернодырец</option>
+        </select>
     </div>
-    <button type="submit">Зарегистрироваться</button>
+
+    <!-- Капча -->
+    <div class="form-group">
+        <label for="captcha">Введите слово с картинки:</label>
+        <input type="text" id="captcha" required>
+        <div id="captchaHint" class="hint-hidden">
+            <img src="/img/hint.png" alt="Капча-подсказка">
+        </div>
+    </div>
+
+    <!-- Кнопка отправки -->
+    <div id="submitButtons">
+        <button type="submit" class="fake-button">Отправить</button>
+        <button type="submit" class="fake-button">Отправить</button>
+        <button type="submit" class="real-button">Отправить</button>
+    </div>
+
 </form>
+
+<!-- Баннер -->
+<div id="banner" class="hidden">
+    <p>Специальное предложение! Подключите уведомления Т банка за 299₽!</p>
+    <button class="banner-button">Ок</button>
+    <button class="banner-button">Хорошо</button>
+    <button class="banner-button">Подробнее</button>
+    <button class="banner-button">Я согласен</button>
+    <button class="banner-button close-top-left">Позже</button>
+</div>
+
 </body>
 </html>

@@ -45,8 +45,8 @@ button:hover {
 }
 
 #submitAnswer {
-    padding: 10px 20px;
-    font-size: 18px;
+    padding: 20px 40px;
+    font-size: 8px;
     cursor: pointer;
     border-radius: 6px;
     background-color: #4caf50;

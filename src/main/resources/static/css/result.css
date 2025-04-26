@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0e0e0e;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 50px;
+}
+
+.result-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#finish-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 30px;
+}
+
+#finish-button:hover {
+    background-color: #ff9800;
+}
+
+#loading-spinner {
+    margin: 30px auto;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #ffc107;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    display: none; /* скрыт по умолчанию */
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
