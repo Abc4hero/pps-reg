@@ -21,63 +21,59 @@
         <input type="text" id="username" th:field="*{username}" required>
     </div>
 
-    <!-- Номер телефона (каждая цифра — из выпадающего списка) -->
+    <!-- Номер телефона (генератор) -->
     <div class="form-group">
-        <label for="phoneNumber">Номер телефона:</label>
-        <div id="phoneNumberSelectors"></div>
+        <label>Номер телефона:</label>
+        <div id="phoneNumberDisplay">+7</div>
+        <button type="button" id="generateDigit">Сгенерировать цифру</button>
+        <button type="button" id="fixDigit">Зафиксировать</button>
+        <input type="hidden" id="phoneNumber" th:field="*{phoneNumber}">
     </div>
 
-    <!-- Сгенерированный пароль -->
+    <!-- Пароль -->
     <div class="form-group">
-        <label for="password">Ваш пароль:</label>
-        <input type="text" id="password" th:field="*{password}" readonly>
+        <label>Ваш пароль:</label>
+        <div id="passwordDisplay"></div>
+        <button type="button" id="generatePassword">Сгенерировать пароль</button>
+        <input type="hidden" id="password" th:field="*{password}">
     </div>
 
-    <!-- Подтверждение пароля (перевёрнутое поле) -->
+    <!-- Подтверждение пароля -->
     <div class="form-group upside-down">
         <label for="confirmPassword">Подтвердите пароль:</label>
-        <input type="text" id="confirmPassword" th:field="*{confirmPassword}" required>
+        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required readonly>
     </div>
 
-    <!-- Вид пришельца (появляется только после клика) -->
+    <!-- Класс пользователя -->
     <div class="form-group">
-        <label for="species">Класс пользователя:</label>
-        <select id="species" th:field="*{species}">
-            <option value="" disabled selected>Выберите...</option>
-            <option value="Ксеноморф">Ксеноморф</option>
-            <option value="Криптотот">Криптотот</option>
-            <option value="Петелинец">Петелинец</option>
-            <option value="Сириец">Сириец</option>
-            <option value="Чернодырец">Чернодырец</option>
-        </select>
+        <label>Класс пользователя:</label>
+        <input type="text" id="speciesField" th:field="*{species}" readonly>
+        <button type="button" id="chooseSpecies">Выбрать мой класс</button>
+        <div id="speciesButtons" class="hidden"></div>
     </div>
 
     <!-- Капча -->
     <div class="form-group">
         <label for="captcha">Введите слово с картинки:</label>
         <input type="text" id="captcha" required>
-        <div id="captchaHint" class="hint-hidden">
+        <div id="captchaHint">
             <img src="/img/hint.png" alt="Капча-подсказка">
         </div>
     </div>
 
     <!-- Кнопка отправки -->
     <div id="submitButtons">
-        <button type="submit" class="fake-button">Отправить</button>
-        <button type="submit" class="fake-button">Отправить</button>
-        <button type="submit" class="real-button">Отправить</button>
+        <button type="submit" id="submitButton" style="display:none">Отправить</button>
     </div>
-
 </form>
 
 <!-- Баннер -->
 <div id="banner" class="hidden">
     <p>Специальное предложение! Подключите уведомления Т банка за 299₽!</p>
-    <button class="banner-button">Ок</button>
-    <button class="banner-button">Хорошо</button>
-    <button class="banner-button">Подробнее</button>
-    <button class="banner-button">Я согласен</button>
-    <button class="banner-button close-top-left">Позже</button>
+    <button class="banner-button" data-cost="299">Ок</button>
+    <button class="banner-button" data-cost="299">Хорошо</button>
+    <button class="banner-button" data-cost="299">Подробнее</button>
+    <button class="banner-button" data-cost="299">Я согласен</button>
 </div>
 
 </body>
