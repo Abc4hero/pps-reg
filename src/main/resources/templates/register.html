@@ -53,22 +53,16 @@
     <button id="submitBtn" disabled>Отправить</button>
 </div>
 
-<div id="bankBanner" class="hidden">
-    <div class="banner-container">
-        <div class="banner-header">
-            <button class="banner-btn" data-action="later">ПОЗЖЕ</button>
-            <button class="banner-btn" data-action="close">ЗАКРЫТЬ</button>
-        </div>
-        <div class="banner-content">
-            Специальное предложение! Подключите уведомления Т банка за 299₽!
-        </div>
-        <div class="banner-footer">
-            <button class="banner-btn" data-action="ok">ОК</button>
-            <button class="banner-btn" data-action="cancel">ОТМЕНА</button>
-            <button class="banner-btn" data-action="good">Хорошо</button>
-            <button class="banner-btn" data-action="agree">Я согласен</button>
-        </div>
+<div id="banner" class="hidden">
+    <p>Специальное предложение! Подключите уведомления Т банка за 299₽!</p>
+    <div class="buttons-grid">
+        <button class="banner-button">Ок</button>
+        <button class="banner-button">Хорошо</button>
+        <button class="banner-button">Подробнее</button>
+        <button class="banner-button">Я согласен</button>
     </div>
+    <button class="close-btn" id="closeLater">Позже</button>
+    <button class="close-btn" id="closeNow">Закрыть</button>
 </div>
 
 <script src="/js/register.js"></script>

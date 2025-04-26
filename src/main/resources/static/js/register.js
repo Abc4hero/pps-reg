@@ -6,6 +6,7 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
+let bannerTimeout;
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -25,22 +26,13 @@ const classValueElement = document.getElementById('classValue');
 const classOptionsElement = document.getElementById('classOptions');
 const captchaInput = document.getElementById('captcha');
 const submitBtn = document.getElementById('submitBtn');
+const banner = document.getElementById('banner');
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     startTimer();
     setupEventListeners();
-    setupBankBanner(); // Заменяем initBankBanner() на новую функцию
-});
-
-// Переносим вызов на load для полной готовности DOM
-window.addEventListener('load', () => {
-    // Дополнительная проверка, если нужно
-    if (!document.querySelector('#bankBanner .banner-footer')) {
-        console.error('Footer баннера не найден!');
-        // Принудительно пересоздаём структуру
-        recreateBannerFooter();
-    }
+    initBankBanner();
 });
 
 // Таймер
@@ -53,7 +45,7 @@ function startTimer() {
     }, 1000);
 }
 
-// Генерация пароля с спецсимволами
+// Генерация пароля
 function generatePassword() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
     password = '';
@@ -64,114 +56,76 @@ function generatePassword() {
     checkFormValidity();
 }
 
-// Баннер Т-банка
-function setupBankBanner() {
-    const banner = document.getElementById('bankBanner');
-    if (!banner) {
-        console.error('Баннер не найден!');
-        return;
-    }
+// Баннер
+function showBanner() {
+    banner.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
 
-    // Принудительно создаём footer если его нет
-    if (!banner.querySelector('.banner-footer')) {
-        recreateBannerFooter();
-    }
-
-    let bannerTimeout;
-
-    function showBanner() {
-        banner.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        console.log('Баннер показан');
-    }
-
-    function hideBanner() {
-        banner.style.display = 'none';
-        document.body.style.overflow = '';
-        moneySpent += 299;
-        console.log('Баннер скрыт, moneySpent:', moneySpent);
-        startBannerTimer();
-    }
-
-    function startBannerTimer() {
-        clearTimeout(bannerTimeout);
-        bannerTimeout = setTimeout(showBanner, 7000);
-        console.log('Таймер баннера запущен');
-    }
-
-    // Вешаем обработчики с проверкой
-    const buttons = banner.querySelectorAll('button');
-    console.log('Найдено кнопок:', buttons.length);
-
-    buttons.forEach(btn => {
-        btn.addEventListener('click', hideBanner);
-        console.log('Обработчик добавлен для:', btn.textContent);
-    });
-
+function hideBanner() {
+    banner.classList.add('hidden');
+    moneySpent += 299;
+    document.body.style.overflow = '';
     startBannerTimer();
 }
 
-function recreateBannerFooter() {
-    const banner = document.getElementById('bankBanner');
-    if (!banner) return;
+function startBannerTimer() {
+    clearTimeout(bannerTimeout);
+    bannerTimeout = setTimeout(showBanner, 7000);
+}
 
-    const footerHtml = `
-        <div class="banner-footer">
-            <button class="banner-btn" data-action="ok">ОК</button>
-            <button class="banner-btn" data-action="cancel">ОТМЕНА</button>
-            <button class="banner-btn" data-action="good">Хорошо</button>
-            <button class="banner-btn" data-action="agree">Я согласен</button>
-        </div>
-    `;
-
-    const container = banner.querySelector('.banner-container');
-    if (container) {
-        container.insertAdjacentHTML('beforeend', footerHtml);
-        console.log('Footer баннера пересоздан');
-    }
+function initBankBanner() {
+    // Вешаем обработчики на все кнопки баннера
+    document.querySelectorAll('#banner button').forEach(btn => {
+        btn.addEventListener('click', hideBanner);
+    });
+    startBannerTimer();
 }
 
 // Обработчики событий
 function setupEventListeners() {
-    // Генерация цифры для номера телефона
+    // Номер телефона
     randomDigitBtn.addEventListener('click', () => {
         currentDigit = Math.floor(Math.random() * 10);
         currentDigitElement.textContent = currentDigit;
     });
 
-    // Фиксация цифры в номере телефона
     fixDigitBtn.addEventListener('click', () => {
         if (currentDigit !== null && phoneNumber.length < 10) {
             phoneNumber += currentDigit;
-            phoneNumberElement.textContent = phoneNumber;
+
+            // Отображаем цифры зеркально
+            phoneNumberElement.innerHTML = '';
+            for (let i = 0; i < phoneNumber.length; i++) {
+                const digitSpan = document.createElement('span');
+                digitSpan.className = 'mirror-digit';
+                digitSpan.textContent = phoneNumber[i];
+                phoneNumberElement.appendChild(digitSpan);
+            }
+
             currentDigit = null;
             currentDigitElement.textContent = '-';
             checkFormValidity();
         }
     });
 
-    // Генерация пароля
+    // Пароль
     generatePasswordBtn.addEventListener('click', generatePassword);
-
-    // Подтверждение пароля
     confirmPasswordElement.addEventListener('input', checkFormValidity);
 
-    // Выбор класса пользователя
+    // Класс пользователя
     selectClassBtn.addEventListener('click', showClassOptions);
 
-    // Проверка капчи при изменении
+    // Капча и отправка
     captchaInput.addEventListener('input', checkFormValidity);
-
-    // Отправка формы
     submitBtn.addEventListener('click', () => {
         localStorage.setItem('timeSpent', timeSpent.toString());
         localStorage.setItem('moneySpent', moneySpent.toString());
         window.location.href = '/result';
     });
-
 }
 
-// Показ вариантов классов
+// Выбор класса
 function showClassOptions() {
     classOptionsElement.innerHTML = '';
     classOptionsElement.classList.remove('hidden');
@@ -182,29 +136,20 @@ function showClassOptions() {
         button.className = 'class-option';
         button.style.backgroundColor = classColors[index];
 
-        // Позиционирование и анимация
-        const startX = Math.random() * (window.innerWidth - 100);
-        const startY = Math.random() * (window.innerHeight - 50);
+        let x = Math.random() * (window.innerWidth - 100);
+        let y = Math.random() * (window.innerHeight - 50);
+        let xSpeed = (Math.random() - 0.5) * 15;
+        let ySpeed = (Math.random() - 0.5) * 25;
 
-        button.style.left = `${startX}px`;
-        button.style.top = `${startY}px`;
-
-        let x = startX;
-        let y = startY;
-        let xSpeed = (Math.random() - 0.5) * 10;
-        let ySpeed = (Math.random() - 0.5) * 10;
+        button.style.left = `${x}px`;
+        button.style.top = `${y}px`;
 
         const moveInterval = setInterval(() => {
             x += xSpeed;
             y += ySpeed;
 
-            // Отскок от границ
-            if (x <= 0 || x >= window.innerWidth - 100) {
-                xSpeed = -xSpeed;
-            }
-            if (y <= 0 || y >= window.innerHeight - 50) {
-                ySpeed = -ySpeed;
-            }
+            if (x <= 0 || x >= window.innerWidth - 100) xSpeed = -xSpeed;
+            if (y <= 0 || y >= window.innerHeight - 50) ySpeed = -ySpeed;
 
             button.style.left = `${x}px`;
             button.style.top = `${y}px`;
@@ -222,7 +167,7 @@ function showClassOptions() {
     });
 }
 
-// Проверка валидности формы
+// Проверка формы
 function checkFormValidity() {
     const isPhoneValid = phoneNumber.length === 10;
     const isPasswordValid = password.length === 10;
