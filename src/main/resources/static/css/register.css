@@ -70,6 +70,16 @@ button:disabled {
     display: inline-block;
 }
 
+.password-display {
+    width: 200px;
+    padding: 8px;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+    font-family: monospace;
+    letter-spacing: 2px;
+    user-select: none;
+}
+
 #confirmPassword {
     width: 100%;
     padding: 8px;
@@ -88,6 +98,7 @@ button:disabled {
 
 /* Стили баннера */
 #banner {
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;

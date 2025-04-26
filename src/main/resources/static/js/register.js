@@ -6,7 +6,8 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
-let bannerTimeout;
+
+let bannerInitialized = false; // Как же он меня задолбал
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -19,7 +20,6 @@ const fixDigitBtn = document.getElementById('fixDigit');
 const currentDigitElement = document.getElementById('currentDigit');
 const phoneNumberElement = document.getElementById('phoneNumber');
 const generatePasswordBtn = document.getElementById('generatePassword');
-const passwordElement = document.getElementById('password');
 const confirmPasswordElement = document.getElementById('confirmPassword');
 const selectClassBtn = document.getElementById('selectClass');
 const classValueElement = document.getElementById('classValue');
@@ -46,40 +46,57 @@ function startTimer() {
 }
 
 // Генерация пароля
+// Заменяем функцию generatePassword
 function generatePassword() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
     password = '';
     for (let i = 0; i < 10; i++) {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    passwordElement.textContent = password;
+
+    // Отображаем звёздочки вместо пароля
+    document.getElementById('passwordDisplay').value = '•'.repeat(10);
     checkFormValidity();
 }
 
+// Добавляем защиту от копирования
+document.getElementById('passwordDisplay').addEventListener('selectstart', (e) => {
+    e.preventDefault();
+    return false;
+});
+
+document.getElementById('passwordDisplay').addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+});
+
 // Баннер
+function initBankBanner() {
+    if (bannerInitialized) return;
+    bannerInitialized = true;
+
+    // Вешаем обработчики один раз
+    document.querySelectorAll('#banner button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            moneySpent += 299;
+            hideBanner();
+        });
+    });
+
+    // Первый показ через 7 секунд
+    setTimeout(showBanner, 7000);
+}
+
 function showBanner() {
-    banner.classList.remove('hidden');
+    banner.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    console.log('Баннер показан'); // Для отладки
 }
 
 function hideBanner() {
-    banner.classList.add('hidden');
-    moneySpent += 299;
+    banner.style.display = 'none';
     document.body.style.overflow = '';
-    startBannerTimer();
-}
-
-function startBannerTimer() {
-    clearTimeout(bannerTimeout);
-    bannerTimeout = setTimeout(showBanner, 7000);
-}
-
-function initBankBanner() {
-    // Вешаем обработчики на все кнопки баннера
-    document.querySelectorAll('#banner button').forEach(btn => {
-        btn.addEventListener('click', hideBanner);
-    });
-    startBannerTimer();
+    // Перезапускаем таймер
+    setTimeout(showBanner, 7000);
 }
 
 // Обработчики событий
@@ -138,8 +155,8 @@ function showClassOptions() {
 
         let x = Math.random() * (window.innerWidth - 100);
         let y = Math.random() * (window.innerHeight - 50);
-        let xSpeed = (Math.random() - 0.5) * 15;
-        let ySpeed = (Math.random() - 0.5) * 25;
+        let xSpeed = (Math.random() - 0.5) * 5;
+        let ySpeed = (Math.random() - 0.5) * 5;
 
         button.style.left = `${x}px`;
         button.style.top = `${y}px`;
@@ -177,3 +194,10 @@ function checkFormValidity() {
 
     submitBtn.disabled = !(isPhoneValid && isPasswordValid && isConfirmValid && isClassSelected && isCaptchaValid);
 }
+console.log('Проверка формы:', {
+    phone: isPhoneValid,
+    pass: isPasswordValid,
+    confirm: isConfirmValid,
+    class: isClassSelected,
+    captcha: isCaptchaValid
+});
