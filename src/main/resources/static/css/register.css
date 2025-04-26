@@ -1,150 +1,171 @@
+/* Основные стили */
 body {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #e8f0fe;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+}
+
+h1 {
     text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
 }
 
 /* Таймер */
 #timer {
-    position: fixed;
-    top: 10px;
-    right: 20px;
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
     color: #333;
 }
 
-/* Заголовок */
-h1 {
-    margin-bottom: 30px;
-    font-size: 32px;
-    color: #222;
-}
-
-/* Форма */
+/* Блок с формой */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 25px;
-}
-
-/* Группы полей */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Модификация ввода номера телефона */
-#phoneNumberSelectors {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-/* Инпуты */
-input, select {
-    padding: 10px;
-    font-size: 18px;
-    margin-top: 10px;
-    text-align: center;
-    border: 2px solid #aaa;
-    border-radius: 8px;
-}
-
-/* Перевёрнутое поле подтверждения пароля */
-.upside-down input {
-    transform: rotate(180deg);
-}
-
-/* Картинка капчи */
-#captchaHint {
-    margin-top: 10px;
-}
-
-.hint-hidden {
-    display: none;
-}
-
-/* Кнопки отправки */
-#submitButtons {
-    display: flex;
-    gap: 15px;
     margin-top: 20px;
 }
 
+/* Общие стили для всех input и select */
+input[type="text"], select {
+    font-size: 1rem;
+    padding: 10px;
+    width: 200px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #0066cc;
+    outline: none;
+}
+
+/* Стили для кнопок */
 button {
+    font-size: 1rem;
     padding: 10px 20px;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
+    margin: 5px;
+    border-radius: 5px;
     cursor: pointer;
-    background-color: #4CAF50;
+}
+
+button.fake-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+}
+
+button.real-button {
+    background-color: #4caf50;
     color: white;
-    transition: background-color 0.3s;
+    border: none;
 }
 
-button:hover {
-    background-color: #45a049;
+button.fake-button:hover, button.real-button:hover {
+    opacity: 0.9;
 }
 
-/* Настоящая кнопка */
-.real-button {
-    background-color: #2196F3;
+button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.real-button:hover {
-    background-color: #1976D2;
+/* Капча */
+#captchaHint {
+    display: none;
+    margin-top: 10px;
+}
+
+#captchaHint img {
+    max-width: 100%;
+    max-height: 50px;
+}
+
+/* Стиль для поля подтверждения пароля, перевёрнутого */
+.upside-down input {
+    transform: rotate(180deg);
+    text-align: center;
 }
 
 /* Баннер */
 #banner {
+    background-color: #ffcc00;
+    color: #333;
+    padding: 15px;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: yellow;
-    border: 2px solid orange;
-    padding: 20px;
-    border-radius: 15px;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    z-index: 1000;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 5px;
+    display: none;
 }
 
+#banner p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.banner-button {
+    background-color: #ffcc00;
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.banner-button:hover {
+    background-color: #ffb300;
+}
+
+.close-top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Скрытое поле с классом */
 .hidden {
     display: none;
 }
 
-/* Кнопки баннера */
-.banner-button {
-    background-color: #ff9800;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
+/* Для элементов выбора телефона */
+#phoneNumberSelectors {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.banner-button:hover {
-    background-color: #e68900;
+#phoneNumberSelectors button {
+    width: 30px;
+    height: 30px;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
-/* Отдельная кнопка "позже" */
-.close-top-left {
-    position: absolute;
-    top: 5px;
-    left: 5px;
+#phoneNumberSelectors button:hover {
     background-color: #ccc;
-    color: black;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 5px;
 }
 
-.close-top-left:hover {
-    background-color: #bbb;
+/* Кнопки для выбора класса */
+#speciesButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#speciesButtons button {
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+#speciesButtons button:hover {
+    background-color: #ccc;
 }
