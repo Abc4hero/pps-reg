@@ -7,6 +7,7 @@ let phoneNumber = '';
 let password = '';
 let selectedClass = '';
 let bankBannerTimeout;
+let bankBannerVisible = false;
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -58,23 +59,31 @@ function generatePassword() {
 
 // Баннер Т-банка
 function showBankBanner() {
-    bankBanner.style.display = 'block';
+    if (bankBannerVisible) return;
+
+    bankBannerVisible = true;
     bankBanner.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+
+    // Добавляем обработчики только при показе баннера
+    document.querySelectorAll('#bankBanner button').forEach(button => {
+        button.addEventListener('click', function() {
+            moneySpent += 299;
+            hideBankBanner();
+        });
+    });
 }
 
 function hideBankBanner() {
+    bankBannerVisible = false;
     bankBanner.classList.add('hidden');
-    moneySpent += 299;
     document.body.style.overflow = '';
-    initBankBanner(); // Запускаем таймер снова
+    initBankBanner(); // Перезапускаем таймер
 }
 
 function initBankBanner() {
     clearTimeout(bankBannerTimeout);
-    bankBannerTimeout = setTimeout(() => {
-        showBankBanner();
-    }, 7000);
+    bankBannerTimeout = setTimeout(showBankBanner, 7000);
 }
 
 // Обработчики событий
@@ -105,11 +114,6 @@ function setupEventListeners() {
     // Выбор класса пользователя
     selectClassBtn.addEventListener('click', showClassOptions);
 
-    // Кнопки баннера
-    document.querySelectorAll('.banner-btn').forEach(button => {
-        button.addEventListener('click', hideBankBanner);
-    });
-
     // Проверка капчи при изменении
     captchaInput.addEventListener('input', checkFormValidity);
 
@@ -119,6 +123,7 @@ function setupEventListeners() {
         localStorage.setItem('moneySpent', moneySpent.toString());
         window.location.href = '/result';
     });
+
 }
 
 // Показ вариантов классов

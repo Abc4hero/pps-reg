@@ -8,16 +8,17 @@ body {
 .container {
     max-width: 600px;
     margin: 0 auto;
-    background-color: white;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px #0000001a;
 }
 
 .timer {
     text-align: right;
     font-size: 1.2em;
     margin-bottom: 20px;
+    color: #333333;
 }
 
 .form-group {
@@ -28,6 +29,7 @@ label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #333333;
 }
 
 .phone-input, .password-input {
@@ -41,15 +43,21 @@ label {
     font-size: 1.5em;
     font-weight: bold;
     margin-left: 10px;
+    color: #333333;
 }
 
 button {
     padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4caf50;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #3e8e41;
 }
 
 button:disabled {
@@ -67,57 +75,75 @@ button:disabled {
     padding: 8px;
     box-sizing: border-box;
     margin-top: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
 }
 
 .captcha-img {
     display: block;
     margin: 10px 0;
     max-width: 200px;
+    border: 1px solid #dddddd;
 }
 
-/* Стили для баннера */
+/* Стили баннера */
 #bankBanner {
     position: fixed;
-    background-color: yellow;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
-    width: 300px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
 
-.banner-header, .banner-footer {
+.banner-container {
+    background-color: #ffeb3b;
+    padding: 25px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 0 20px #000000cc;
+}
+
+.banner-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .banner-content {
-    margin: 15px 0;
+    margin: 20px 0;
+    font-size: 1.2em;
     font-weight: bold;
     text-align: center;
+    color: #333333;
 }
 
 .banner-btn {
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
+    padding: 10px 20px;
     margin: 0 5px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.banner-footer {
-    justify-content: center;
-    flex-wrap: wrap;
+.banner-btn:hover {
+    background-color: #555555;
 }
 
-.footer-btn {
-    margin: 5px;
+.banner-footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .hidden {
@@ -129,5 +155,7 @@ button:disabled {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    transition: all 0.1s;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 0 5px #000000cc;
 }
