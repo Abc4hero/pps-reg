@@ -3,6 +3,7 @@ package z2432k.memology;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class AlienRegistrationApplication {
     public static void main(String[] args) {
         SpringApplication.run(AlienRegistrationApplication.class, args);

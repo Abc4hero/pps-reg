@@ -6,17 +6,21 @@
 
     <groupId>z2432k.memology</groupId>
     <artifactId>alien-registration</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>Alien Registration</name>
     <description>Funny alien registration form</description>
-
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.5</version>
+    </parent>
     <properties>
-        <java.version>17</java.version>
-        <spring.boot.version>3.2.5</spring.boot.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>23</java.version>
+        <spring.boot.version>3.4.5</spring.boot.version>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -49,7 +53,15 @@
                     <mainClass>z2432k.memology.AlienRegistrationApplication</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version> <!-- последняя нормальная версия на 2025 -->
+                <configuration>
+                    <source>23</source>
+                    <target>23</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>
