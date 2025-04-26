@@ -1,171 +1,132 @@
-/* Основные стили */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
 }
 
-h1 {
-    text-align: center;
-    font-size: 2rem;
-    margin-top: 20px;
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Таймер */
-#timer {
-    font-size: 1.5rem;
+.timer {
+    text-align: right;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
     font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-    color: #333;
 }
 
-/* Блок с формой */
-form {
+.phone-input, .password-input {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-top: 20px;
-}
-
-/* Общие стили для всех input и select */
-input[type="text"], select {
-    font-size: 1rem;
-    padding: 10px;
-    width: 200px;
+    gap: 10px;
     margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
 }
 
-input[type="text"]:focus, select:focus {
-    border-color: #0066cc;
-    outline: none;
+#currentDigit {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 10px;
 }
 
-/* Стили для кнопок */
 button {
-    font-size: 1rem;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button.fake-button {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-}
-
-button.real-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-}
-
-button.fake-button:hover, button.real-button:hover {
-    opacity: 0.9;
-}
-
-button[disabled] {
-    opacity: 0.5;
+button:disabled {
+    background-color: #cccccc;
     cursor: not-allowed;
 }
 
-/* Капча */
-#captchaHint {
-    display: none;
+.upside-down {
+    transform: rotate(180deg);
+    display: inline-block;
+}
+
+.virtual-keyboard {
+    display: inline-block;
     margin-top: 10px;
 }
 
-#captchaHint img {
-    max-width: 100%;
-    max-height: 50px;
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
 }
 
-/* Стиль для поля подтверждения пароля, перевёрнутого */
-.upside-down input {
-    transform: rotate(180deg);
-    text-align: center;
+.key {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    font-size: 1.2em;
 }
 
-/* Баннер */
-#banner {
-    background-color: #ffcc00;
-    color: #333;
+#confirmPassword {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.captcha-img {
+    display: block;
+    margin: 10px 0;
+    max-width: 200px;
+}
+
+#bankBanner {
+    position: absolute;
+    background-color: yellow;
     padding: 15px;
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    border-radius: 5px;
-    display: none;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
 }
 
-#banner p {
-    margin: 0;
+.banner-header, .banner-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.banner-content {
+    margin: 10px 0;
     font-weight: bold;
 }
 
-.banner-button {
-    background-color: #ffcc00;
-    color: #333;
-    border: none;
+.banner-btn {
+    background-color: #333;
+    color: white;
     padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 3px;
+    margin: 0 5px;
 }
 
-.banner-button:hover {
-    background-color: #ffb300;
-}
-
-.close-top-left {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-/* Скрытое поле с классом */
 .hidden {
     display: none;
 }
 
-/* Для элементов выбора телефона */
-#phoneNumberSelectors {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-#phoneNumberSelectors button {
-    width: 30px;
-    height: 30px;
-    background-color: #e0e0e0;
-    border: 1px solid #ccc;
+.class-option {
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
     cursor: pointer;
-}
-
-#phoneNumberSelectors button:hover {
-    background-color: #ccc;
-}
-
-/* Кнопки для выбора класса */
-#speciesButtons {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-#speciesButtons button {
-    background-color: #e0e0e0;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    padding: 5px 10px;
-    margin: 5px;
-}
-
-#speciesButtons button:hover {
-    background-color: #ccc;
+    transition: all 0.1s;
 }

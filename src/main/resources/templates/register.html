@@ -1,82 +1,96 @@
-<!-- src/main/resources/templates/register.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Старняя Ресиграцитя</title>
-    <link rel="stylesheet" href="/css/register.css">
-    <script src="/js/register.js" defer></script>
+    <link rel="stylesheet" href="register.css">
 </head>
 <body>
+<div class="container">
+    <div class="timer" id="timer">00:00</div>
 
-<div id="timer">00:00</div>
+    <h1>Форма точно не регистрации</h1>
 
-<h1>Форма точно не регистрации</h1>
-
-<form id="registrationForm" action="/register" method="post" th:object="${alienUser}">
-
-    <!-- Имя пользователя -->
-    <div class="form-group">
-        <label for="username">Имя пользователя:</label>
-        <input type="text" id="username" th:field="*{username}" required>
-    </div>
-
-    <!-- Номер телефона -->
     <div class="form-group">
         <label>Номер телефона:</label>
-        <div id="phone-number-display">Номер: </div>
-        <button type="button" id="generate-digit">Случайная цифра</button>
-        <button type="button" id="fix-digit">Зафиксировать цифру</button>
-        <input type="hidden" id="phoneNumber" th:field="*{phoneNumber}">
-    </div>
-
-    <!-- Генерация пароля -->
-    <div class="form-group">
-        <label>Ваш пароль:</label>
-        <div id="password-display">Нажмите "Сгенерировать"</div>
-        <button type="button" id="generate-password">Сгенерировать пароль</button>
-        <input type="hidden" id="password" th:field="*{password}">
-    </div>
-
-    <!-- Подтверждение пароля (перевёрнутое поле) -->
-    <div class="form-group upside-down">
-        <label for="confirmPassword">Подтвердите пароль:</label>
-        <input type="text" id="confirmPassword" th:field="*{confirmPassword}" readonly required>
-    </div>
-
-    <!-- Класс пользователя -->
-    <div class="form-group">
-        <label>Класс пользователя:</label>
-        <button type="button" id="start-species-selection">Выбрать мой класс</button>
-        <input type="hidden" id="species" th:field="*{species}">
-        <div id="species-buttons" style="position: relative;"></div>
-    </div>
-
-    <!-- Капча -->
-    <div class="form-group">
-        <label for="captcha">Введите слово с картинки:</label>
-        <input type="text" id="captcha" required>
-        <div id="captchaHint" class="hint-visible">
-            <img src="/img/hint.png" alt="Капча-подсказка" style="width: 80px; height: 20px;">
+        <div class="phone-input">
+            <span id="phoneNumber"></span>
+            <div class="phone-controls">
+                <button id="randomDigit">Рандомная цифра</button>
+                <button id="fixDigit">Зафиксировать</button>
+            </div>
+            <div id="currentDigit">-</div>
         </div>
     </div>
 
-    <!-- Кнопка отправки -->
-    <div id="submitButtons">
-        <button type="submit" id="realSubmit" class="real-button" disabled>Отправить</button>
+    <div class="form-group">
+        <label>Пароль:</label>
+        <div class="password-input">
+            <span id="password"></span>
+            <button id="generatePassword">Сгенерировать пароль</button>
+        </div>
     </div>
 
-</form>
+    <div class="form-group">
+        <label class="upside-down">Подтверждение пароля:</label>
+        <div class="virtual-keyboard">
+            <div class="keyboard-row">
+                <button class="key" data-char="1">1</button>
+                <button class="key" data-char="2">2</button>
+                <button class="key" data-char="3">3</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" data-char="4">4</button>
+                <button class="key" data-char="5">5</button>
+                <button class="key" data-char="6">6</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" data-char="7">7</button>
+                <button class="key" data-char="8">8</button>
+                <button class="key" data-char="9">9</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" data-char="0">0</button>
+                <button class="key" data-char="A">A</button>
+                <button class="key" data-char="B">B</button>
+            </div>
+        </div>
+        <input type="text" id="confirmPassword" class="upside-down" readonly>
+    </div>
 
-<!-- Баннер -->
-<div id="banner" class="hidden">
-    <p>Специальное предложение! Подключите уведомления Т банка за 299₽!</p>
-    <button class="banner-button">Ок</button>
-    <button class="banner-button">Хорошо</button>
-    <button class="banner-button">Подробнее</button>
-    <button class="banner-button">Я согласен</button>
-    <button class="banner-button close-top-left">Позже</button>
+    <div class="form-group">
+        <label>Класс пользователя:</label>
+        <button id="selectClass">Выбрать мой класс</button>
+        <div id="classValue"></div>
+        <div id="classOptions" class="hidden"></div>
+    </div>
+
+    <div class="form-group">
+        <label>Капча:</label>
+        <img src="/img/hint.png" alt="Капча" class="captcha-img">
+        <input type="text" id="captcha" placeholder="Введите текст с картинки">
+    </div>
+
+    <button id="submitBtn" disabled>Отправить</button>
 </div>
 
+<div id="bankBanner" class="hidden">
+    <div class="banner-header">
+        <button class="banner-btn" data-action="later">ПОЗЖЕ</button>
+        <button class="banner-btn" data-action="close">ЗАКРЫТЬ</button>
+    </div>
+    <div class="banner-content">
+        Специальное предложение! Подключите уведомления Т банка за 299₽!
+    </div>
+    <div class="banner-footer">
+        <button class="banner-btn" data-action="ok">ОК</button>
+        <button class="banner-btn" data-action="cancel">ОТМЕНА</button>
+        <button class="banner-btn" data-action="good">Хорошо</button>
+        <button class="banner-btn" data-action="agree">Я согласен</button>
+    </div>
+</div>
+
+<script src="register.js"></script>
 </body>
 </html>

@@ -1,153 +1,208 @@
-// src/main/resources/static/js/register.js
-
-let timerInterval;
+// Глобальные переменные
 let timeSpent = 0;
 let moneySpent = 0;
+let timerInterval;
+let currentDigit = null;
+let phoneNumber = '';
+let password = '';
+let selectedClass = '';
+let bankBannerInterval;
 
-const timerDisplay = document.getElementById('timer');
-const phoneNumberLabel = document.getElementById('phoneNumberLabel');
-const phoneDigitLabel = document.getElementById('phoneDigitLabel');
-const generateDigitButton = document.getElementById('generateDigit');
-const confirmDigitButton = document.getElementById('confirmDigit');
-const phoneHiddenInput = document.getElementById('phoneNumberHidden');
-const passwordLabel = document.getElementById('passwordLabel');
-const generatePasswordButton = document.getElementById('generatePassword');
-const confirmPasswordInput = document.getElementById('confirmPassword');
-const chooseSpeciesButton = document.getElementById('chooseSpecies');
-const speciesHiddenInput = document.getElementById('speciesHidden');
-const speciesButtonsContainer = document.getElementById('speciesButtons');
-const captchaHint = document.getElementById('captchaHint');
+// Классы пользователя
+const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
+const classColors = ['#FF5733', '#33FF57', '#3357FF', '#F033FF', '#FF33F0'];
+
+// DOM элементы
+const timerElement = document.getElementById('timer');
+const randomDigitBtn = document.getElementById('randomDigit');
+const fixDigitBtn = document.getElementById('fixDigit');
+const currentDigitElement = document.getElementById('currentDigit');
+const phoneNumberElement = document.getElementById('phoneNumber');
+const generatePasswordBtn = document.getElementById('generatePassword');
+const passwordElement = document.getElementById('password');
+const confirmPasswordElement = document.getElementById('confirmPassword');
+const selectClassBtn = document.getElementById('selectClass');
+const classValueElement = document.getElementById('classValue');
+const classOptionsElement = document.getElementById('classOptions');
 const captchaInput = document.getElementById('captcha');
-const registrationForm = document.getElementById('registrationForm');
-const realSubmitButton = document.getElementById('realSubmit');
-const banner = document.getElementById('banner');
-const bannerButtons = banner.querySelectorAll('button');
+const submitBtn = document.getElementById('submitBtn');
+const bankBanner = document.getElementById('bankBanner');
+const keyboardButtons = document.querySelectorAll('.key');
 
-const SPECIES = ['Ксеноморф', 'Криптонианец', 'Бетелианец', 'Сириусианец', 'Орвелианец'];
-
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    startTimer();
+    setupEventListeners();
+    startBankBanner();
+});
+// Слушаем мышь для раздражающего баннера
+document.addEventListener('mousemove', (e) => {
+    localStorage.setItem('lastMouseX', e.clientX.toString());
+    localStorage.setItem('lastMouseY', e.clientY.toString());
+});
+// Таймер
 function startTimer() {
     timerInterval = setInterval(() => {
         timeSpent++;
-        const minutes = String(Math.floor(timeSpent / 60)).padStart(2, '0');
-        const seconds = String(timeSpent % 60).padStart(2, '0');
-        timerDisplay.textContent = `${minutes}:${seconds}`;
+        const minutes = Math.floor(timeSpent / 60).toString().padStart(2, '0');
+        const seconds = (timeSpent % 60).toString().padStart(2, '0');
+        timerElement.textContent = `${minutes}:${seconds}`;
     }, 1000);
 }
 
-function stopTimer() {
-    clearInterval(timerInterval);
+// Баннер Т-банка
+function startBankBanner() {
+    bankBannerInterval = setInterval(() => {
+        showBankBanner();
+    }, 7000);
 }
 
-// Телефон
-let currentPhone = '';
-let currentDigit = '';
+function showBankBanner() {
+    // Отслеживаем позицию курсора
+    document.addEventListener('mousemove', updateBannerPosition);
 
-generateDigitButton.addEventListener('click', () => {
-    currentDigit = Math.floor(Math.random() * 10);
-    phoneDigitLabel.textContent = currentDigit;
-});
+    // Показываем баннер рядом с текущей позицией курсора
+    const x = parseInt(localStorage.getItem('lastMouseX') || '0');
+    const y = parseInt(localStorage.getItem('lastMouseY') || '0');
+    updateBannerPosition({ clientX: x, clientY: y });
 
-confirmDigitButton.addEventListener('click', () => {
-    if (currentDigit !== '') {
-        currentPhone += currentDigit;
-        phoneNumberLabel.textContent = currentPhone;
-        phoneHiddenInput.value = currentPhone;
-        phoneDigitLabel.textContent = '_';
-        currentDigit = '';
-    }
-});
-
-// Пароль
-function randomPassword(length = 8) {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    bankBanner.classList.remove('hidden');
 }
 
-generatePasswordButton.addEventListener('click', () => {
-    const password = randomPassword();
-    passwordLabel.textContent = password;
-});
+function updateBannerPosition(e) {
+    // Сохраняем позицию курсора для последующего использования
+    localStorage.setItem('lastMouseX', e.clientX.toString());
+    localStorage.setItem('lastMouseY', e.clientY.toString());
 
-confirmPasswordInput.addEventListener('focus', () => {
-    confirmPasswordInput.removeAttribute('readonly');
-});
+    // Позиционируем баннер
+    bankBanner.style.left = (e.clientX - 100) + 'px';
+    bankBanner.style.top = (e.clientY - 50) + 'px';
+}
 
-confirmPasswordInput.addEventListener('input', () => {
-    // Disable manual typing (allow only from on-screen keyboard)
-    confirmPasswordInput.value = confirmPasswordInput.value;
-});
+function hideBankBanner() {
+    // Удаляем обработчик перемещения
+    document.removeEventListener('mousemove', updateBannerPosition);
 
-// Класс пользователя
-chooseSpeciesButton.addEventListener('click', () => {
-    speciesButtonsContainer.innerHTML = '';
-    const shuffledSpecies = [...SPECIES].sort(() => Math.random() - 0.5);
-    shuffledSpecies.forEach(species => {
-        const btn = document.createElement('button');
-        btn.textContent = species;
-        btn.className = 'species-button';
-        btn.style.top = `${Math.random() * 80 + 10}%`;
-        btn.style.left = `${Math.random() * 80 + 10}%`;
-        btn.style.position = 'absolute';
-        btn.addEventListener('click', () => {
-            speciesHiddenInput.value = species;
-            speciesButtonsContainer.innerHTML = '';
+    bankBanner.classList.add('hidden');
+    moneySpent += 299;
+}
+
+// Обработчики событий
+function setupEventListeners() {
+    // Генерация цифры для номера телефона
+    randomDigitBtn.addEventListener('click', () => {
+        currentDigit = Math.floor(Math.random() * 10);
+        currentDigitElement.textContent = currentDigit;
+    });
+
+    // Фиксация цифры в номере телефона
+    fixDigitBtn.addEventListener('click', () => {
+        if (currentDigit !== null && phoneNumber.length < 10) {
+            phoneNumber += currentDigit;
+            phoneNumberElement.textContent = phoneNumber;
+            currentDigit = null;
+            currentDigitElement.textContent = '-';
+            checkFormValidity();
+        }
+    });
+
+    // Генерация пароля
+    generatePasswordBtn.addEventListener('click', () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        password = '';
+        for (let i = 0; i < 10; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        passwordElement.textContent = password;
+        checkFormValidity();
+    });
+
+    // Виртуальная клавиатура для подтверждения пароля
+    keyboardButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            confirmPasswordElement.value += button.getAttribute('data-char');
+            checkFormValidity();
         });
-        speciesButtonsContainer.appendChild(btn);
     });
-});
 
-// Показываем подсказку капчи сразу
-captchaHint.classList.remove('hint-hidden');
+    // Выбор класса пользователя
+    selectClassBtn.addEventListener('click', showClassOptions);
 
-// Баннер
-let bannerTimeout;
-
-function showBanner() {
-    const { clientX, clientY } = lastMouseMove;
-    banner.style.left = clientX + 'px';
-    banner.style.top = clientY + 'px';
-    banner.classList.remove('hidden');
-}
-
-function hideBanner() {
-    banner.classList.add('hidden');
-    clearTimeout(bannerTimeout);
-    bannerTimeout = setTimeout(showBanner, 5000);
-}
-
-bannerButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        moneySpent += 299;
-        hideBanner();
+    // Кнопки баннера
+    document.querySelectorAll('.banner-btn').forEach(button => {
+        button.addEventListener('click', hideBankBanner);
     });
-});
 
-let lastMouseMove = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
+    // Проверка капчи при изменении
+    captchaInput.addEventListener('input', checkFormValidity);
 
-document.addEventListener('mousemove', e => {
-    lastMouseMove = { clientX: e.clientX, clientY: e.clientY };
-});
-
-setTimeout(showBanner, 5000);
-
-// Проверка заполненности всех полей
-function validateForm() {
-    return document.getElementById('username').value.trim() !== '' &&
-        phoneHiddenInput.value.length === 10 &&
-        passwordLabel.textContent.length > 0 &&
-        confirmPasswordInput.value.trim() !== '' &&
-        speciesHiddenInput.value.trim() !== '' &&
-        captchaInput.value.trim().toLowerCase() === 'مبرمج';
+    // Отправка формы
+    submitBtn.addEventListener('click', () => {
+        // Сохраняем данные как строки
+        localStorage.setItem('timeSpent', timeSpent.toString());
+        localStorage.setItem('moneySpent', moneySpent.toString());
+        window.location.href = '/result';
+    });
 }
 
-// Отображение реальной кнопки отправки
-registrationForm.addEventListener('input', () => {
-    if (validateForm()) {
-        realSubmitButton.classList.remove('hidden');
-    } else {
-        realSubmitButton.classList.add('hidden');
-    }
-});
+// Показ вариантов классов
+function showClassOptions() {
+    classOptionsElement.innerHTML = '';
+    classOptionsElement.classList.remove('hidden');
 
-// Старт таймера при открытии
-startTimer();
+    userClasses.forEach((cls, index) => {
+        const button = document.createElement('button');
+        button.textContent = cls;
+        button.className = 'class-option';
+        button.style.backgroundColor = classColors[index];
+
+        // Позиционирование и анимация
+        const startX = Math.random() * (window.innerWidth - 100);
+        const startY = Math.random() * (window.innerHeight - 50);
+
+        button.style.left = `${startX}px`;
+        button.style.top = `${startY}px`;
+
+        let x = startX;
+        let y = startY;
+        let xSpeed = (Math.random() - 0.5) * 10;
+        let ySpeed = (Math.random() - 0.5) * 10;
+
+        const moveInterval = setInterval(() => {
+            x += xSpeed;
+            y += ySpeed;
+
+            // Отскок от границ
+            if (x <= 0 || x >= window.innerWidth - 100) {
+                xSpeed = -xSpeed;
+            }
+            if (y <= 0 || y >= window.innerHeight - 50) {
+                ySpeed = -ySpeed;
+            }
+
+            button.style.left = `${x}px`;
+            button.style.top = `${y}px`;
+        }, 50);
+
+        button.addEventListener('click', () => {
+            clearInterval(moveInterval);
+            selectedClass = cls;
+            classValueElement.textContent = cls;
+            classOptionsElement.classList.add('hidden');
+            checkFormValidity();
+        });
+
+        classOptionsElement.appendChild(button);
+    });
+}
+
+// Проверка валидности формы
+function checkFormValidity() {
+    const isPhoneValid = phoneNumber.length === 10;
+    const isPasswordValid = password.length === 10;
+    const isConfirmValid = confirmPasswordElement.value === password;
+    const isClassSelected = selectedClass !== '';
+    const isCaptchaValid = captchaInput.value === 'مبرمج';
+
+    submitBtn.disabled = !(isPhoneValid && isPasswordValid && isConfirmValid && isClassSelected && isCaptchaValid);
+}
