@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Регистрация Инопланетянина</title>
+</head>
+<body>
+<h1>🚀 Регистрация Инопланетянина</h1>
+<form th:action="@{/register}" th:object="${alienUser}" method="post">
+    <div>
+        <label>Имя пользователя:</label>
+        <input type="text" th:field="*{username}" />
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+    </div>
+    <div>
+        <label>Номер телефона:</label>
+        <input type="text" th:field="*{phoneNumber}" />
+        <span th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+    </div>
+    <div>
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" />
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+    </div>
+    <div>
+        <label>Подтверждение пароля:</label>
+        <input type="password" th:field="*{confirmPassword}" />
+        <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
+    </div>
+    <div>
+        <label>Класс пользователя:</label>
+        <input type="text" th:field="*{species}" />
+        <span th:if="${#fields.hasErrors('species')}" th:errors="*{species}"></span>
+    </div>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+</body>
+</html>
