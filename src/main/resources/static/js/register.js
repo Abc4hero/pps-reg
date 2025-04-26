@@ -7,7 +7,7 @@ let phoneNumber = '';
 let password = '';
 let selectedClass = '';
 
-let bannerInitialized = false; // Как же он меня задолбал
+//let bannerInitialized = false; // Как же он меня задолбал
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -53,10 +53,6 @@ function generatePassword() {
     for (let i = 0; i < 10; i++) {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-
-    // Отображаем звёздочки вместо пароля
-    document.getElementById('passwordDisplay').value = '•'.repeat(10);
-    checkFormValidity();
 }
 
 // Добавляем защиту от копирования
@@ -64,7 +60,10 @@ document.getElementById('passwordDisplay').addEventListener('selectstart', (e) =
     e.preventDefault();
     return false;
 });
-
+document.getElementById('passwordDisplay').addEventListener('copy', (e) => {
+    e.preventDefault();
+    alert('Ага, щас.');
+});
 document.getElementById('passwordDisplay').addEventListener('contextmenu', (e) => {
     e.preventDefault();
 });
@@ -153,20 +152,29 @@ function showClassOptions() {
         button.className = 'class-option';
         button.style.backgroundColor = classColors[index];
 
-        let x = Math.random() * (window.innerWidth - 100);
-        let y = Math.random() * (window.innerHeight - 50);
-        let xSpeed = (Math.random() - 0.5) * 5;
-        let ySpeed = (Math.random() - 0.5) * 5;
+        // Позиционирование и анимация
+        const startX = Math.random() * (window.innerWidth - 100);
+        const startY = Math.random() * (window.innerHeight - 50);
 
-        button.style.left = `${x}px`;
-        button.style.top = `${y}px`;
+        button.style.left = `${startX}px`;
+        button.style.top = `${startY}px`;
+
+        let x = startX;
+        let y = startY;
+        let xSpeed = (Math.random() - 0.5) * 10;
+        let ySpeed = (Math.random() - 0.5) * 10;
 
         const moveInterval = setInterval(() => {
             x += xSpeed;
             y += ySpeed;
 
-            if (x <= 0 || x >= window.innerWidth - 100) xSpeed = -xSpeed;
-            if (y <= 0 || y >= window.innerHeight - 50) ySpeed = -ySpeed;
+            // Отскок от границ
+            if (x <= 0 || x >= window.innerWidth - 100) {
+                xSpeed = -xSpeed;
+            }
+            if (y <= 0 || y >= window.innerHeight - 50) {
+                ySpeed = -ySpeed;
+            }
 
             button.style.left = `${x}px`;
             button.style.top = `${y}px`;
