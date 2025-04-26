@@ -69,10 +69,10 @@ function showEquation() {
     const correctAnswer = op === '+' ? a + b : a - b;
 
     container.innerHTML = `
-        <div id="equation">Решите уравнение: (${a}) ${op} (${b}) = ?</div>
-        <input type="number" id="answerInput" />
-        <button onclick="checkAnswer(${correctAnswer})">Ответить</button>
-    `;
+    <div id="equation">Решите уравнение: ${a} ${op} ${b} = ?</div>
+    <input type="number" id="answerInput" />
+    <button id="submitAnswer" onclick="checkAnswer(${correctAnswer})">Ответить</button>
+`;
 
     document.body.appendChild(container);
 }
