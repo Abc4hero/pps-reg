@@ -6,8 +6,6 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
-let bankBannerTimeout;
-let bankBannerVisible = false;
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -27,13 +25,22 @@ const classValueElement = document.getElementById('classValue');
 const classOptionsElement = document.getElementById('classOptions');
 const captchaInput = document.getElementById('captcha');
 const submitBtn = document.getElementById('submitBtn');
-const bankBanner = document.getElementById('bankBanner');
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     startTimer();
     setupEventListeners();
-    initBankBanner();
+    setupBankBanner(); // Заменяем initBankBanner() на новую функцию
+});
+
+// Переносим вызов на load для полной готовности DOM
+window.addEventListener('load', () => {
+    // Дополнительная проверка, если нужно
+    if (!document.querySelector('#bankBanner .banner-footer')) {
+        console.error('Footer баннера не найден!');
+        // Принудительно пересоздаём структуру
+        recreateBannerFooter();
+    }
 });
 
 // Таймер
@@ -58,32 +65,70 @@ function generatePassword() {
 }
 
 // Баннер Т-банка
-function showBankBanner() {
-    if (bankBannerVisible) return;
+function setupBankBanner() {
+    const banner = document.getElementById('bankBanner');
+    if (!banner) {
+        console.error('Баннер не найден!');
+        return;
+    }
 
-    bankBannerVisible = true;
-    bankBanner.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    // Принудительно создаём footer если его нет
+    if (!banner.querySelector('.banner-footer')) {
+        recreateBannerFooter();
+    }
 
-    // Добавляем обработчики только при показе баннера
-    document.querySelectorAll('#bankBanner button').forEach(button => {
-        button.addEventListener('click', function() {
-            moneySpent += 299;
-            hideBankBanner();
-        });
+    let bannerTimeout;
+
+    function showBanner() {
+        banner.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        console.log('Баннер показан');
+    }
+
+    function hideBanner() {
+        banner.style.display = 'none';
+        document.body.style.overflow = '';
+        moneySpent += 299;
+        console.log('Баннер скрыт, moneySpent:', moneySpent);
+        startBannerTimer();
+    }
+
+    function startBannerTimer() {
+        clearTimeout(bannerTimeout);
+        bannerTimeout = setTimeout(showBanner, 7000);
+        console.log('Таймер баннера запущен');
+    }
+
+    // Вешаем обработчики с проверкой
+    const buttons = banner.querySelectorAll('button');
+    console.log('Найдено кнопок:', buttons.length);
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', hideBanner);
+        console.log('Обработчик добавлен для:', btn.textContent);
     });
+
+    startBannerTimer();
 }
 
-function hideBankBanner() {
-    bankBannerVisible = false;
-    bankBanner.classList.add('hidden');
-    document.body.style.overflow = '';
-    initBankBanner(); // Перезапускаем таймер
-}
+function recreateBannerFooter() {
+    const banner = document.getElementById('bankBanner');
+    if (!banner) return;
 
-function initBankBanner() {
-    clearTimeout(bankBannerTimeout);
-    bankBannerTimeout = setTimeout(showBankBanner, 7000);
+    const footerHtml = `
+        <div class="banner-footer">
+            <button class="banner-btn" data-action="ok">ОК</button>
+            <button class="banner-btn" data-action="cancel">ОТМЕНА</button>
+            <button class="banner-btn" data-action="good">Хорошо</button>
+            <button class="banner-btn" data-action="agree">Я согласен</button>
+        </div>
+    `;
+
+    const container = banner.querySelector('.banner-container');
+    if (container) {
+        container.insertAdjacentHTML('beforeend', footerHtml);
+        console.log('Footer баннера пересоздан');
+    }
 }
 
 // Обработчики событий
