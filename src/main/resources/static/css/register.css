@@ -62,28 +62,11 @@ button:disabled {
     display: inline-block;
 }
 
-.virtual-keyboard {
-    display: inline-block;
-    margin-top: 10px;
-}
-
-.keyboard-row {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 5px;
-}
-
-.key {
-    width: 40px;
-    height: 40px;
-    margin: 0 5px;
-    font-size: 1.2em;
-}
-
 #confirmPassword {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
+    margin-top: 10px;
 }
 
 .captcha-img {
@@ -92,13 +75,18 @@ button:disabled {
     max-width: 200px;
 }
 
+/* Стили для баннера */
 #bankBanner {
-    position: absolute;
+    position: fixed;
     background-color: yellow;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .banner-header, .banner-footer {
@@ -108,8 +96,9 @@ button:disabled {
 }
 
 .banner-content {
-    margin: 10px 0;
+    margin: 15px 0;
     font-weight: bold;
+    text-align: center;
 }
 
 .banner-btn {
@@ -117,6 +106,18 @@ button:disabled {
     color: white;
     padding: 5px 10px;
     margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.banner-footer {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-btn {
+    margin: 5px;
 }
 
 .hidden {

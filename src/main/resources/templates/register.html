@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Старняя Ресиграцитя</title>
-    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="/css/register.css">
 </head>
 <body>
 <div class="container">
@@ -33,30 +33,8 @@
     </div>
 
     <div class="form-group">
-        <label class="upside-down">Подтверждение пароля:</label>
-        <div class="virtual-keyboard">
-            <div class="keyboard-row">
-                <button class="key" data-char="1">1</button>
-                <button class="key" data-char="2">2</button>
-                <button class="key" data-char="3">3</button>
-            </div>
-            <div class="keyboard-row">
-                <button class="key" data-char="4">4</button>
-                <button class="key" data-char="5">5</button>
-                <button class="key" data-char="6">6</button>
-            </div>
-            <div class="keyboard-row">
-                <button class="key" data-char="7">7</button>
-                <button class="key" data-char="8">8</button>
-                <button class="key" data-char="9">9</button>
-            </div>
-            <div class="keyboard-row">
-                <button class="key" data-char="0">0</button>
-                <button class="key" data-char="A">A</button>
-                <button class="key" data-char="B">B</button>
-            </div>
-        </div>
-        <input type="text" id="confirmPassword" class="upside-down" readonly>
+        <label for="confirmPassword" class="upside-down">Подтверждение пароля:</label>
+        <input type="text" id="confirmPassword" class="upside-down">
     </div>
 
     <div class="form-group">
@@ -67,7 +45,7 @@
     </div>
 
     <div class="form-group">
-        <label>Капча:</label>
+        <label for="captcha">Капча:</label>
         <img src="/img/hint.png" alt="Капча" class="captcha-img">
         <input type="text" id="captcha" placeholder="Введите текст с картинки">
     </div>
@@ -84,13 +62,13 @@
         Специальное предложение! Подключите уведомления Т банка за 299₽!
     </div>
     <div class="banner-footer">
-        <button class="banner-btn" data-action="ok">ОК</button>
-        <button class="banner-btn" data-action="cancel">ОТМЕНА</button>
-        <button class="banner-btn" data-action="good">Хорошо</button>
-        <button class="banner-btn" data-action="agree">Я согласен</button>
+        <button class="banner-btn footer-btn" data-action="ok">ОК</button>
+        <button class="banner-btn footer-btn" data-action="cancel">ОТМЕНА</button>
+        <button class="banner-btn footer-btn" data-action="good">Хорошо</button>
+        <button class="banner-btn footer-btn" data-action="agree">Я согласен</button>
     </div>
 </div>
 
-<script src="register.js"></script>
+<script src="/js/register.js"></script>
 </body>
 </html>

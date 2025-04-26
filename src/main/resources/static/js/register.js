@@ -6,7 +6,7 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
-let bankBannerInterval;
+let bankBannerTimeout;
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -27,19 +27,14 @@ const classOptionsElement = document.getElementById('classOptions');
 const captchaInput = document.getElementById('captcha');
 const submitBtn = document.getElementById('submitBtn');
 const bankBanner = document.getElementById('bankBanner');
-const keyboardButtons = document.querySelectorAll('.key');
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     startTimer();
     setupEventListeners();
-    startBankBanner();
+    initBankBanner();
 });
-// Слушаем мышь для раздражающего баннера
-document.addEventListener('mousemove', (e) => {
-    localStorage.setItem('lastMouseX', e.clientX.toString());
-    localStorage.setItem('lastMouseY', e.clientY.toString());
-});
+
 // Таймер
 function startTimer() {
     timerInterval = setInterval(() => {
@@ -50,41 +45,36 @@ function startTimer() {
     }, 1000);
 }
 
+// Генерация пароля с спецсимволами
+function generatePassword() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
+    password = '';
+    for (let i = 0; i < 10; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    passwordElement.textContent = password;
+    checkFormValidity();
+}
+
 // Баннер Т-банка
-function startBankBanner() {
-    bankBannerInterval = setInterval(() => {
-        showBankBanner();
-    }, 7000);
-}
-
 function showBankBanner() {
-    // Отслеживаем позицию курсора
-    document.addEventListener('mousemove', updateBannerPosition);
-
-    // Показываем баннер рядом с текущей позицией курсора
-    const x = parseInt(localStorage.getItem('lastMouseX') || '0');
-    const y = parseInt(localStorage.getItem('lastMouseY') || '0');
-    updateBannerPosition({ clientX: x, clientY: y });
-
+    bankBanner.style.display = 'block';
     bankBanner.classList.remove('hidden');
-}
-
-function updateBannerPosition(e) {
-    // Сохраняем позицию курсора для последующего использования
-    localStorage.setItem('lastMouseX', e.clientX.toString());
-    localStorage.setItem('lastMouseY', e.clientY.toString());
-
-    // Позиционируем баннер
-    bankBanner.style.left = (e.clientX - 100) + 'px';
-    bankBanner.style.top = (e.clientY - 50) + 'px';
+    document.body.style.overflow = 'hidden';
 }
 
 function hideBankBanner() {
-    // Удаляем обработчик перемещения
-    document.removeEventListener('mousemove', updateBannerPosition);
-
     bankBanner.classList.add('hidden');
     moneySpent += 299;
+    document.body.style.overflow = '';
+    initBankBanner(); // Запускаем таймер снова
+}
+
+function initBankBanner() {
+    clearTimeout(bankBannerTimeout);
+    bankBannerTimeout = setTimeout(() => {
+        showBankBanner();
+    }, 7000);
 }
 
 // Обработчики событий
@@ -107,23 +97,10 @@ function setupEventListeners() {
     });
 
     // Генерация пароля
-    generatePasswordBtn.addEventListener('click', () => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        password = '';
-        for (let i = 0; i < 10; i++) {
-            password += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        passwordElement.textContent = password;
-        checkFormValidity();
-    });
+    generatePasswordBtn.addEventListener('click', generatePassword);
 
-    // Виртуальная клавиатура для подтверждения пароля
-    keyboardButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            confirmPasswordElement.value += button.getAttribute('data-char');
-            checkFormValidity();
-        });
-    });
+    // Подтверждение пароля
+    confirmPasswordElement.addEventListener('input', checkFormValidity);
 
     // Выбор класса пользователя
     selectClassBtn.addEventListener('click', showClassOptions);
@@ -138,7 +115,6 @@ function setupEventListeners() {
 
     // Отправка формы
     submitBtn.addEventListener('click', () => {
-        // Сохраняем данные как строки
         localStorage.setItem('timeSpent', timeSpent.toString());
         localStorage.setItem('moneySpent', moneySpent.toString());
         window.location.href = '/result';
