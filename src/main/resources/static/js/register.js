@@ -6,6 +6,7 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
+let username = '';
 //let bankBannerTimeout;
 
 // Классы пользователя
@@ -20,6 +21,7 @@ const currentDigitElement = document.getElementById('currentDigit');
 const phoneNumberElement = document.getElementById('phoneNumber');
 const generatePasswordBtn = document.getElementById('generatePassword');
 const passwordElement = document.getElementById('password');
+const usernameElement = document.getElementById('username');
 const confirmPasswordElement = document.getElementById('confirmPassword');
 const selectClassBtn = document.getElementById('selectClass');
 const classValueElement = document.getElementById('classValue');
@@ -117,6 +119,11 @@ function setupEventListeners() {
     submitBtn.addEventListener('click', () => {
         localStorage.setItem('timeSpent', timeSpent.toString());
         localStorage.setItem('moneySpent', moneySpent.toString());
+        localStorage.setItem('phoneNumber', phoneNumber);
+//        localStorage.setItem('password', password); // debug
+        localStorage.setItem('selectedClass', selectedClass);
+        localStorage.setItem('username', usernameElement.value); //просто передаем
+        localStorage.setItem('captcha', captchaInput.value);
         window.location.href = '/result';
     });
 }
@@ -141,8 +148,8 @@ function showClassOptions() {
 
         let x = startX;
         let y = startY;
-        let xSpeed = (Math.random() - 0.5) * 10;
-        let ySpeed = (Math.random() - 0.5) * 10;
+        let xSpeed = (Math.random() - 0.5) * 20;
+        let ySpeed = (Math.random() - 0.5) * 20;
 
         const moveInterval = setInterval(() => {
             x += xSpeed;

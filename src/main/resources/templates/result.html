@@ -2,18 +2,23 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Результат не регистрации, а просто так</title>
+    <title>Результат регистрации</title>
     <link rel="stylesheet" href="/css/result.css">
 </head>
+
 <body>
+<div class="container">
+    <h1>Поздравляем, мы вас теперь не знаем!</h1>
 
-<div class="result-container">
-    <h1 id="congratulations-text">Поздравляем, мы тебя теперь не знаем!</h1>
+    <div class="user-info">
+        <p>Класс: <span id="classValue"></span></p>
+        <p>Имя: <span id="username"></span></p>
+        <p>Телефон: <span id="phoneNumber"></span></p>
+        <p>Время заполнения: <span id="timeSpent"></span> сек</p>
+        <p>Потрачено на баннер: <span id="moneySpent"></span> ₽</p>
+    </div>
 
-    <p id="summary-text"></p>
-
-    <button id="finish-button">Забрать приз</button>
-    <div id="loading-spinner" class="hidden"></div>
+    <a href="/" class="btn">В начало</a>
 </div>
 
 <script src="/js/result.js"></script>

@@ -3,54 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
+    <title>Просто очередная страница</title>
     <link rel="stylesheet" href="/css/register.css">
 </head>
 <body>
 <div class="container">
     <div class="timer" id="timer">00:00</div>
 
-    <h1>Регистрация</h1>
-
+    <h1>Это точно не регистрация</h1>
+    <button id="submitBtn" disabled>Не согласный я</button>
     <div class="form-group">
-        <label>Номер телефона:</label>
+        <label>Номер головы:</label>
         <div class="phone-input">
             <span id="phoneNumber"></span>
             <div class="phone-controls">
-                <button id="randomDigit">Рандомная цифра</button>
-                <button id="fixDigit">Зафиксировать</button>
+                <button id="randomDigit">Отправить форму</button>
+                <button id="fixDigit">Возможности</button>
             </div>
             <div id="currentDigit">-</div>
         </div>
     </div>
 
     <div class="form-group">
-        <label>Пароль:</label>
+        <label>Напрасные слова:</label>
         <div class="password-input">
             <span id="password"></span>
-            <button id="generatePassword">Сгенерировать пароль</button>
+            <button id="generatePassword">Выдумать что-нибудь</button>
         </div>
     </div>
 
     <div class="form-group">
-        <label for="confirmPassword">Подтверждение пароля:</label>
+        <label for="confirmPassword">Введите текст с картинки:</label>
+        <img src="/img/hint.png" alt="Картинка" class="captcha-img">
         <input type="text" id="confirmPassword" class="upside-down">
     </div>
 
     <div class="form-group">
-        <label>Класс пользователя:</label>
-        <button id="selectClass">Выбрать мой класс</button>
+        <label>Выбрать себя:</label>
+        <button id="selectClass">Зафиксировать</button>
         <div id="classValue"></div>
         <div id="classOptions" class="hidden"></div>
     </div>
 
     <div class="form-group">
-        <label for="captcha">Капча:</label>
-        <img src="/img/hint.png" alt="Капча" class="captcha-img">
-        <input type="text" id="captcha" placeholder="Введите текст с картинки">
+        <label for="captcha">Введите имя:</label>
+        <input type="text" id="captcha" placeholder="Введите какой-нибудь текст">
     </div>
 
-    <button id="submitBtn" disabled>Отправить</button>
+    <div class="form-group">
+        <label for="namae">Сюда тоже что-то надо:</label>
+        <input type="text" id="namae" placeholder="153-фз бла-бла">
+    </div>
+
 </div>
 
 <script src="/js/register.js"></script>
