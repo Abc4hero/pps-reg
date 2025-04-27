@@ -27,6 +27,10 @@ public class RegistrationController {
     public String showResultPage() {
         return "result"; // Переход на result.html
     }
+    @GetMapping("/testing")
+    public String showTestPage() {
+        return "testing"; // Переход на result.html
+    }
 /*
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {

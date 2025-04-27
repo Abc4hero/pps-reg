@@ -17,11 +17,20 @@
         <div class="phone-input">
             <span id="phoneNumber"></span>
             <div class="phone-controls">
-                <button id="randomDigit">Отправить форму</button>
-                <button id="fixDigit">Возможности</button>
+                <button id="randomDigit">Я всё</button>
+                <button id="fixDigit">Зафиксировать</button>
             </div>
             <div id="currentDigit">-</div>
         </div>
+    </div>
+    <div class="form-group">
+        <label for="fake">Введите номер телефона:</label>
+        <input type="text" id="fake" placeholder="88005553535" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+        <label for="captcha">Введите имя:</label>
+        <input type="text" id="captcha" placeholder="Введите какой-нибудь текст" autocomplete="off">
     </div>
 
     <div class="form-group">
@@ -33,12 +42,6 @@
     </div>
 
     <div class="form-group">
-        <label for="confirmPassword">Введите текст с картинки:</label>
-        <img src="/img/hint.png" alt="Картинка" class="captcha-img">
-        <input type="text" id="confirmPassword" class="upside-down">
-    </div>
-
-    <div class="form-group">
         <label>Выбрать себя:</label>
         <button id="selectClass">Зафиксировать</button>
         <div id="classValue"></div>
@@ -46,13 +49,13 @@
     </div>
 
     <div class="form-group">
-        <label for="captcha">Введите имя:</label>
-        <input type="text" id="captcha" placeholder="Введите какой-нибудь текст">
+        <label for="confirmPassword">Введите текст с картинки:</label>
+        <img src="/img/hint.png" alt="Картинка" class="captcha-img">
+        <input type="text" id="confirmPassword" class="upside-down" onpaste="return false;" autocomplete="off">
     </div>
-
     <div class="form-group">
-        <label for="namae">Сюда тоже что-то надо:</label>
-        <input type="text" id="namae" placeholder="153-фз бла-бла">
+        <label for="username">Сюда тоже что-то надо:</label>
+        <input type="text" id="username" placeholder="153-фз бла-бла" autocomplete="off">
     </div>
 
 </div>
