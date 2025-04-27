@@ -6,8 +6,7 @@ let currentDigit = null;
 let phoneNumber = '';
 let password = '';
 let selectedClass = '';
-
-//let bannerInitialized = false; // Как же он меня задолбал
+//let bankBannerTimeout;
 
 // Классы пользователя
 const userClasses = ['Ксеноморф', 'Криптотот', 'Петелинд', 'Сириец', 'Чернодырец'];
@@ -20,19 +19,20 @@ const fixDigitBtn = document.getElementById('fixDigit');
 const currentDigitElement = document.getElementById('currentDigit');
 const phoneNumberElement = document.getElementById('phoneNumber');
 const generatePasswordBtn = document.getElementById('generatePassword');
+const passwordElement = document.getElementById('password');
 const confirmPasswordElement = document.getElementById('confirmPassword');
 const selectClassBtn = document.getElementById('selectClass');
 const classValueElement = document.getElementById('classValue');
 const classOptionsElement = document.getElementById('classOptions');
 const captchaInput = document.getElementById('captcha');
 const submitBtn = document.getElementById('submitBtn');
-const banner = document.getElementById('banner');
+//const bankBanner = document.getElementById('bankBanner');
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', () => {
     startTimer();
     setupEventListeners();
-    initBankBanner();
+//    initBankBanner();
 });
 
 // Таймер
@@ -45,95 +45,75 @@ function startTimer() {
     }, 1000);
 }
 
-// Генерация пароля
-// Заменяем функцию generatePassword
+// Генерация пароля с спецсимволами
 function generatePassword() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
     password = '';
     for (let i = 0; i < 10; i++) {
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    passwordElement.textContent = password;
+    checkFormValidity();
 }
 
-// Добавляем защиту от копирования
-document.getElementById('passwordDisplay').addEventListener('selectstart', (e) => {
-    e.preventDefault();
-    return false;
-});
-document.getElementById('passwordDisplay').addEventListener('copy', (e) => {
-    e.preventDefault();
-    alert('Ага, щас.');
-});
-document.getElementById('passwordDisplay').addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-});
-
-// Баннер
-function initBankBanner() {
-    if (bannerInitialized) return;
-    bannerInitialized = true;
-
-    // Вешаем обработчики один раз
-    document.querySelectorAll('#banner button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            moneySpent += 299;
-            hideBanner();
-        });
-    });
-
-    // Первый показ через 7 секунд
-    setTimeout(showBanner, 7000);
-}
-
-function showBanner() {
-    banner.style.display = 'block';
+/*// Баннер Т-банка
+function showBankBanner() {
+    bankBanner.style.display = 'block';
+    bankBanner.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    console.log('Баннер показан'); // Для отладки
 }
 
-function hideBanner() {
-    banner.style.display = 'none';
+function hideBankBanner() {
+    bankBanner.classList.add('hidden');
+    moneySpent += 299;
     document.body.style.overflow = '';
-    // Перезапускаем таймер
-    setTimeout(showBanner, 7000);
+    initBankBanner(); // Запускаем таймер снова
 }
+
+function initBankBanner() {
+    clearTimeout(bankBannerTimeout);
+    bankBannerTimeout = setTimeout(() => {
+        showBankBanner();
+    }, 7000);
+}*/
 
 // Обработчики событий
 function setupEventListeners() {
-    // Номер телефона
+    // Генерация цифры для номера телефона
     randomDigitBtn.addEventListener('click', () => {
         currentDigit = Math.floor(Math.random() * 10);
         currentDigitElement.textContent = currentDigit;
     });
 
+    // Фиксация цифры в номере телефона
     fixDigitBtn.addEventListener('click', () => {
         if (currentDigit !== null && phoneNumber.length < 10) {
             phoneNumber += currentDigit;
-
-            // Отображаем цифры зеркально
-            phoneNumberElement.innerHTML = '';
-            for (let i = 0; i < phoneNumber.length; i++) {
-                const digitSpan = document.createElement('span');
-                digitSpan.className = 'mirror-digit';
-                digitSpan.textContent = phoneNumber[i];
-                phoneNumberElement.appendChild(digitSpan);
-            }
-
+            phoneNumberElement.textContent = phoneNumber;
             currentDigit = null;
             currentDigitElement.textContent = '-';
             checkFormValidity();
         }
     });
 
-    // Пароль
+    // Генерация пароля
     generatePasswordBtn.addEventListener('click', generatePassword);
+
+    // Подтверждение пароля
     confirmPasswordElement.addEventListener('input', checkFormValidity);
 
-    // Класс пользователя
+    // Выбор класса пользователя
     selectClassBtn.addEventListener('click', showClassOptions);
 
-    // Капча и отправка
+/*    // Кнопки баннера
+    document.querySelectorAll('.banner-btn').forEach(button => {
+        button.addEventListener('click', hideBankBanner);
+    });*/
+
+    // Проверка капчи при изменении
     captchaInput.addEventListener('input', checkFormValidity);
+
+    // Отправка формы
     submitBtn.addEventListener('click', () => {
         localStorage.setItem('timeSpent', timeSpent.toString());
         localStorage.setItem('moneySpent', moneySpent.toString());
@@ -141,7 +121,7 @@ function setupEventListeners() {
     });
 }
 
-// Выбор класса
+// Показ вариантов классов
 function showClassOptions() {
     classOptionsElement.innerHTML = '';
     classOptionsElement.classList.remove('hidden');
@@ -192,7 +172,7 @@ function showClassOptions() {
     });
 }
 
-// Проверка формы
+// Проверка валидности формы
 function checkFormValidity() {
     const isPhoneValid = phoneNumber.length === 10;
     const isPasswordValid = password.length === 10;
@@ -202,10 +182,3 @@ function checkFormValidity() {
 
     submitBtn.disabled = !(isPhoneValid && isPasswordValid && isConfirmValid && isClassSelected && isCaptchaValid);
 }
-console.log('Проверка формы:', {
-    phone: isPhoneValid,
-    pass: isPasswordValid,
-    confirm: isConfirmValid,
-    class: isClassSelected,
-    captcha: isCaptchaValid
-});
